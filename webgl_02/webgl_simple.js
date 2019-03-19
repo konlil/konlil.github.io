@@ -14,19 +14,25 @@ function main()
 	//vertex shader
 	const vsSource = `
 		attribute vec4 vPos;
+		attribute vec4 vColor;
 
 		uniform mat4 uModelViewMatrix;
 		uniform mat4 uProjectionMatrix;
 
+		varying lowp vec4 vFragColor;
+
 		void main(){
 			gl_Position = uProjectionMatrix * uModelViewMatrix * vPos;
+			vFragColor = vColor;
 		}
 	`;
 
 	//fragment shader
 	const fsSource = `
+		varying lowp vec4 vFragColor;
+		
 		void main(){
-			gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+			gl_FragColor = vFragColor;
 		}
 	`;
 
@@ -38,6 +44,7 @@ function main()
 		program: shaderProgram,
 		attribs: {
 			vertexPosition: gl.getAttribLocation(shaderProgram, "vPos"),
+			vertexColor: gl.getAttribLocation(shaderProgram, "vColor"),
 		},
 
 		uniforms: {
@@ -57,25 +64,32 @@ function main()
 //create and fill buffers
 function initBuffers(gl)
 {
-	const positionBuffer = gl.createBuffer();
-
-	//bind buffer
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-	//create positions of a square
+	//set up positions
 	const positions = [
 		1.0, 1.0,
 		-1.0, 1.0,
 		1.0, -1.0,
 		-1.0, -1.0,
 	];
-
-	//fill gl buffer
+	const positionBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+	//set up colors
+	var colors = [
+		1.0, 1.0, 1.0, 1.0, //white
+		1.0, 0.0, 0.0, 1.0, //red
+		0.0, 1.0, 0.0, 1.0, //green
+		0.0, 0.0, 1.0, 1.0, //blue
+	];
+	const colorBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
 	//return buffer obj
 	return { 
-		position: positionBuffer, 
+		position: positionBuffer,
+		color: colorBuffer,
 	};
 }
 
@@ -102,7 +116,7 @@ function drawScene(gl, programInfo, buffers)
 	const modelViewMatrix = mat4.create();
 	mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
 
-	//transport data to gpu
+	//transport position to gpu
 	{
 		const num = 2;  // a square = 2 triangles
 		const type = gl.FLOAT;
@@ -119,6 +133,25 @@ function drawScene(gl, programInfo, buffers)
 			offset,
 		);
 		gl.enableVertexAttribArray(programInfo.attribs.vertexPosition);
+	}
+
+	//transport color to gpu
+	{
+		const numComponents = 4;
+		const type = gl.FLOAT;
+		const normalize = false;
+		const stride = 0;
+		const offset = 0;
+		gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+		gl.vertexAttribPointer(
+			programInfo.attribs.vertexColor,
+			numComponents,
+			type,
+			normalize,
+			stride,
+			offset
+		);
+		gl.enableVertexAttribArray(programInfo.attribs.vertexColor);
 	}
 
 	//use shader program
