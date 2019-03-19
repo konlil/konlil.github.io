@@ -1,7 +1,32 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Hello</h1>
-<p>I'm Konlil.</p>
+<head>
+	<title>Konlil's Demo</title>
+	<meta charset="utf-8">
+</head>
+<body onload="main()">
+  <canvas id="glcanvas" width="640" height="480"></canvas>
 </body>
+
+<script type="text/javascript">
+	main();
+
+	// start
+	function main() {
+		const canvas = document.querySelector("#glcanvas");
+		//initialize gl context
+		const gl = canvas.getContext("webgl");
+
+		//check
+		if(!gl)
+		{
+			alert("Unable to initialize WebGL. Your browser or machine may not support it.");
+			return;
+		}
+
+		//clear
+		gl.clearColor(1.0, 0.0, 0.0, 1.0);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+	}
+</script>
 </html>
