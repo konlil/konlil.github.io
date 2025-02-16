@@ -4,9 +4,7 @@ date: 2023-10-01
 draft: false
 ---
 
-## About Me 👋
-
-Hello! I'm Konlil, a passionate game developer and technology enthusiast. Welcome to my blog! Here, I share my journey in programming, development tips, and life experiences.
+Hello!👋 I'm Konlil, a passionate game developer and technology enthusiast. Welcome to my blog! Here, I share my journey in programming, development tips, and life experiences.
 
 ### Background 🧑‍💻
 - **Profession**: 3D-game developer / Game engine developer
