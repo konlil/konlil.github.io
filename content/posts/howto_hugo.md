@@ -32,10 +32,10 @@ git init
 
 ### 三、添加主题（以 Ananke 为例）
 ```bash
-git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
+git submodule add https://github.com/luizdepra/hugo-coder.git themes/hugo-coder
 
 # 修改 config.toml
-echo 'theme = "ananke"' >> config.toml
+echo 'theme = "hugo-coder"' >> config.toml
 ```
 
 ### 四、创建内容
