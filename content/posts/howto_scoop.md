@@ -1,15 +1,15 @@
-+++ 
+--- 
 title: "在 Windows 系统上安装 Scoop 的完整指南"
 date: "2025-02-18T04:19:51.431Z"
 draft: false
 description: "本指南详细介绍了在 Windows 系统上安装 Scoop 的步骤，包括常见问题解决方案和使用技巧。"
 tags: ["Scoop", "Windows", "包管理器", "Hugo"]
-slug = ""
-authors = ["konlil"]
-categories = []
-externalLink = ""
-series = []
-+++
+slug: ""
+authors: ["konlil"]
+categories: []
+externalLink: ""
+series: []
+---
 
 
 ### **Scoop 是什么？**

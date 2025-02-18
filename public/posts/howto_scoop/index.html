@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  在 Windows 系统上安装 Scoop 的完整指南 · Konlil
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Konlil">
+<meta name="description" content="本指南详细介绍了在 Windows 系统上安装 Scoop 的步骤，包括常见问题解决方案和使用技巧。">
+<meta name="keywords" content="blog,developer,personal">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="在 Windows 系统上安装 Scoop 的完整指南">
+  <meta name="twitter:description" content="本指南详细介绍了在 Windows 系统上安装 Scoop 的步骤，包括常见问题解决方案和使用技巧。">
+
+<meta property="og:url" content="http://localhost:1313/posts/howto_scoop/">
+  <meta property="og:site_name" content="Konlil">
+  <meta property="og:title" content="在 Windows 系统上安装 Scoop 的完整指南">
+  <meta property="og:description" content="本指南详细介绍了在 Windows 系统上安装 Scoop 的步骤，包括常见问题解决方案和使用技巧。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-18T04:19:51+00:00">
+    <meta property="article:modified_time" content="2025-02-18T04:19:51+00:00">
+    <meta property="article:tag" content="Scoop">
+    <meta property="article:tag" content="Windows">
+    <meta property="article:tag" content="包管理器">
+    <meta property="article:tag" content="Hugo">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/howto_scoop/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Konlil
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/howto_scoop/">
+              在 Windows 系统上安装 Scoop 的完整指南
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2025-02-18T04:19:51Z">
+                February 18, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              2-minute read
+            </span>
+          </div>
+          <div class="authors">
+  <i class="fa-solid fa-user" aria-hidden="true"></i>
+    <a href="/authors/konlil/">Konlil</a></div>
+
+          
+          <div class="tags">
+  <i class="fa-solid fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/scoop/">Scoop</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/windows/">Windows</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/">包管理器</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/hugo/">Hugo</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <h3 id="scoop-是什么">
+  <strong>Scoop 是什么？</strong>
+  <a class="heading-link" href="#scoop-%e6%98%af%e4%bb%80%e4%b9%88">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>Scoop 是 Windows 的包管理器，可通过命令行快速安装开发工具（如 Hugo、Git 等），无需手动下载安装包。</p>
+<hr>
+<h3 id="安装前准备">
+  <strong>安装前准备</strong>
+  <a class="heading-link" href="#%e5%ae%89%e8%a3%85%e5%89%8d%e5%87%86%e5%a4%87">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ol>
+<li>
+<p>确认系统要求：</p>
+<ul>
+<li>Windows 7+</li>
+<li>PowerShell 5.1 或更高版本（Win10+ 自带）</li>
+<li>允许执行 PowerShell 脚本</li>
+</ul>
+</li>
+<li>
+<p><strong>检查 PowerShell 版本</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#79c0ff">$PSVersionTable</span>.<span style="color:#79c0ff">PSVersion</span>  <span style="color:#8b949e;font-style:italic"># 输出应显示 Major ≥5</span>
+</span></span></code></pre></div></li>
+</ol>
+<hr>
+<h3 id="安装-scoop分两种模式">
+  <strong>安装 Scoop（分两种模式）</strong>
+  <a class="heading-link" href="#%e5%ae%89%e8%a3%85-scoop%e5%88%86%e4%b8%a4%e7%a7%8d%e6%a8%a1%e5%bc%8f">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<h4 id="模式一普通用户安装推荐">
+  <strong>模式一：普通用户安装（推荐）</strong>
+  <a class="heading-link" href="#%e6%a8%a1%e5%bc%8f%e4%b8%80%e6%99%ae%e9%80%9a%e7%94%a8%e6%88%b7%e5%ae%89%e8%a3%85%e6%8e%a8%e8%8d%90">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>不需要管理员权限，软件默认安装到 <code>C:\Users\&lt;用户名&gt;\scoop</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 1. 打开 PowerShell（非管理员）</span>
+</span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 2. 设置允许执行脚本（一次性操作）</span>
+</span></span><span style="display:flex;"><span>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 3. 安装 Scoop</span>
+</span></span><span style="display:flex;"><span>irm get.<span style="color:#79c0ff">scoop</span>.<span style="color:#79c0ff">sh</span> | iex
+</span></span></code></pre></div><h4 id="模式二系统级安装管理员权限">
+  <strong>模式二：系统级安装（管理员权限）</strong>
+  <a class="heading-link" href="#%e6%a8%a1%e5%bc%8f%e4%ba%8c%e7%b3%bb%e7%bb%9f%e7%ba%a7%e5%ae%89%e8%a3%85%e7%ae%a1%e7%90%86%e5%91%98%e6%9d%83%e9%99%90">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>需要管理员权限，软件安装到 <code>C:\ProgramData\scoop</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 1. 以管理员身份运行 PowerShell</span>
+</span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 2. 执行安装命令</span>
+</span></span><span style="display:flex;"><span>irm get.<span style="color:#79c0ff">scoop</span>.<span style="color:#79c0ff">sh</span> -outfile <span style="color:#a5d6ff">&#39;install.ps1&#39;</span>
+</span></span><span style="display:flex;"><span>.\install.<span style="color:#79c0ff">ps1</span> -RunAsAdmin
+</span></span></code></pre></div><hr>
+<h3 id="验证安装">
+  <strong>验证安装</strong>
+  <a class="heading-link" href="#%e9%aa%8c%e8%af%81%e5%ae%89%e8%a3%85">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>scoop help  <span style="color:#8b949e;font-style:italic"># 显示帮助信息即成功</span>
+</span></span></code></pre></div><hr>
+<h3 id="配置常用仓库">
+  <strong>配置常用仓库</strong>
+  <a class="heading-link" href="#%e9%85%8d%e7%bd%ae%e5%b8%b8%e7%94%a8%e4%bb%93%e5%ba%93">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 添加官方推荐仓库</span>
+</span></span><span style="display:flex;"><span>scoop bucket add main      <span style="color:#8b949e;font-style:italic"># 基础仓库（默认已添加）</span>
+</span></span><span style="display:flex;"><span>scoop bucket add extras    <span style="color:#8b949e;font-style:italic"># 扩展软件（如 VSCode、FFmpeg）</span>
+</span></span><span style="display:flex;"><span>scoop bucket add versions  <span style="color:#8b949e;font-style:italic"># 多版本软件（如不同 Python 版本）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 查看已添加仓库</span>
+</span></span><span style="display:flex;"><span>scoop bucket list
+</span></span></code></pre></div><hr>
+<h3 id="安装-hugo">
+  <strong>安装 Hugo</strong>
+  <a class="heading-link" href="#%e5%ae%89%e8%a3%85-hugo">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>scoop install hugo  <span style="color:#8b949e;font-style:italic"># 自动处理依赖（如 Git）</span>
+</span></span><span style="display:flex;"><span>hugo version        <span style="color:#8b949e;font-style:italic"># 验证安装</span>
+</span></span></code></pre></div><hr>
+<h3 id="常见问题解决">
+  <strong>常见问题解决</strong>
+  <a class="heading-link" href="#%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98%e8%a7%a3%e5%86%b3">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<h4 id="1-执行策略阻止安装">
+  <strong>1. 执行策略阻止安装</strong>
+  <a class="heading-link" href="#1-%e6%89%a7%e8%a1%8c%e7%ad%96%e7%95%a5%e9%98%bb%e6%ad%a2%e5%ae%89%e8%a3%85">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 错误提示：无法加载文件，因为在此系统上禁止运行脚本</span>
+</span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 解决方法：</span>
+</span></span><span style="display:flex;"><span>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+</span></span></code></pre></div><h4 id="2-网络问题导致安装失败">
+  <strong>2. 网络问题导致安装失败</strong>
+  <a class="heading-link" href="#2-%e7%bd%91%e7%bb%9c%e9%97%ae%e9%a2%98%e5%af%bc%e8%87%b4%e5%ae%89%e8%a3%85%e5%a4%b1%e8%b4%a5">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<ul>
+<li>确保能访问 GitHub（可能需要代理）</li>
+<li>手动下载安装脚本：
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 下载安装脚本</span>
+</span></span><span style="display:flex;"><span>Invoke-WebRequest -Uri https<span style="color:#f85149">:</span>//raw.<span style="color:#79c0ff">githubusercontent</span>.com/ScoopInstaller/Install/master/install.<span style="color:#79c0ff">ps1</span> -OutFile install.<span style="color:#79c0ff">ps1</span>
+</span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"># 手动执行</span>
+</span></span><span style="display:flex;"><span>.\install.<span style="color:#79c0ff">ps1</span> -RunAsAdmin  <span style="color:#8b949e;font-style:italic"># 管理员模式</span>
+</span></span></code></pre></div></li>
+</ul>
+<h4 id="3-路径污染path-冲突">
+  <strong>3. 路径污染（Path 冲突）</strong>
+  <a class="heading-link" href="#3-%e8%b7%af%e5%be%84%e6%b1%a1%e6%9f%93path-%e5%86%b2%e7%aa%81">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>如果出现命令冲突：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>scoop reset &lt;软件名&gt;  <span style="color:#8b949e;font-style:italic"># 例如 scoop reset hugo</span>
+</span></span></code></pre></div><hr>
+<h3 id="高效使用技巧">
+  <strong>高效使用技巧</strong>
+  <a class="heading-link" href="#%e9%ab%98%e6%95%88%e4%bd%bf%e7%94%a8%e6%8a%80%e5%b7%a7">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ol>
+<li>
+<p><strong>更新软件</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>scoop update         <span style="color:#8b949e;font-style:italic"># 更新 Scoop 自身</span>
+</span></span><span style="display:flex;"><span>scoop status         <span style="color:#8b949e;font-style:italic"># 查看可更新软件</span>
+</span></span><span style="display:flex;"><span>scoop update hugo    <span style="color:#8b949e;font-style:italic"># 更新指定软件</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>清理缓存</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>scoop cache rm *     <span style="color:#8b949e;font-style:italic"># 清理所有下载缓存</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>快速搜索</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>scoop search hugo    <span style="color:#8b949e;font-style:italic"># 搜索 Hugo 相关软件</span>
+</span></span></code></pre></div></li>
+</ol>
+<hr>
+<p>通过以上步骤，你可以在 Windows 上完成 Scoop 的安装，并通过 <code>scoop install hugo</code> 继续之前的 Hugo 建站流程。</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script>
+  window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    
+    document.addEventListener('themeChanged', function (e) { 
+        if (document.readyState == 'complete') {
+          DISQUS.reset({ reload: true, config: disqus_config });
+        }
+    });
+</script>
+        
+        
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2025
+     Konlil 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
