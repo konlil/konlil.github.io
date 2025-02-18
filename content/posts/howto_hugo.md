@@ -1,5 +1,5 @@
 ---
-title: "在 GitHub Pages 上使用 Hugo 创建个人站点的完整步骤"
+title: "在 GitHub Pages 上使用 Hugo 创建个人站点"
 date: "2025-02-18T04:19:51.431Z"
 draft: false
 description: "本指南详细介绍了如何在 GitHub Pages 上使用 Hugo 创建个人站点，包括前期准备、创建站点、添加主题、创建内容、本地预览、部署到 GitHub Pages 以及自动化部署等步骤。"
