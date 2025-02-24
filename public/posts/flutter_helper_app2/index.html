@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  跨平台文件写入实现方案及注意事项 · Konlil
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Konlil">
+<meta name="description" content="以下是针对跨平台文件写入需求的实现方案及注意事项：
+
+
+  一、核心挑战分析
+  
+    
+    Link to heading
+  
+
+
+
+平台限制：
+
+Android：普通应用无法直接写入其他应用的私有目录 (/data/data/)，需依赖公共目录或游戏暴露的接口。
+iOS：沙盒机制严格禁止访问其他应用目录，除非使用共享的 App Group。
+PC：无沙盒限制，可直接操作文件系统。
+
+
+
+权限要求：
+
+Android：需要 WRITE_EXTERNAL_STORAGE 权限（API &lt; 29）或使用 Scoped Storage（API ≥ 30）。
+iOS：需配置 App Group 或依赖用户手动选择路径。
+
+
+
+
+
+  二、实现方案
+  
+    
+    Link to heading
+  
+
+
+  方案一：写入公共目录（推荐）
+  
+    
+    Link to heading
+  
+
+前提：游戏App需预先约定从设备的公共目录（如 Downloads）读取文件。
+// 使用 path_provider 获取公共目录路径
+import &#39;package:path_provider/path_provider.dart&#39;;
+import &#39;dart:io&#39;;
+
+Future&lt;void&gt; writeFileToPublicDir(String content) async {
+  // 获取平台公共目录
+  final Directory dir = await getDownloadsDirectory(); 
+  final File file = File(&#39;${dir.path}/game_config.txt&#39;);
+  
+  await file.writeAsString(content);
+  print(&#39;文件已保存至: ${file.path}&#39;);
+}
+
+// 调用示例
+writeFileToPublicDir(&#39;Hello from Flutter Tool!&#39;);
+
+  方案二：通过 App Group 共享目录（仅iOS）
+  
+    
+    Link to heading
+  
+
+
+
+配置步骤：">
+<meta name="keywords" content="blog,developer,personal">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="跨平台文件写入实现方案及注意事项">
+  <meta name="twitter:description" content="以下是针对跨平台文件写入需求的实现方案及注意事项：
+一、核心挑战分析Link to heading平台限制：
+Android：普通应用无法直接写入其他应用的私有目录 (/data/data/)，需依赖公共目录或游戏暴露的接口。 iOS：沙盒机制严格禁止访问其他应用目录，除非使用共享的 App Group。 PC：无沙盒限制，可直接操作文件系统。 权限要求：
+Android：需要 WRITE_EXTERNAL_STORAGE 权限（API &lt; 29）或使用 Scoped Storage（API ≥ 30）。 iOS：需配置 App Group 或依赖用户手动选择路径。 二、实现方案Link to heading方案一：写入公共目录（推荐）Link to heading前提：游戏App需预先约定从设备的公共目录（如 Downloads）读取文件。
+// 使用 path_provider 获取公共目录路径 import &#39;package:path_provider/path_provider.dart&#39;; import &#39;dart:io&#39;; Future&lt;void&gt; writeFileToPublicDir(String content) async { // 获取平台公共目录 final Directory dir = await getDownloadsDirectory(); final File file = File(&#39;${dir.path}/game_config.txt&#39;); await file.writeAsString(content); print(&#39;文件已保存至: ${file.path}&#39;); } // 调用示例 writeFileToPublicDir(&#39;Hello from Flutter Tool!&#39;); 方案二：通过 App Group 共享目录（仅iOS）Link to heading配置步骤：">
+
+<meta property="og:url" content="http://localhost:1313/posts/flutter_helper_app2/">
+  <meta property="og:site_name" content="Konlil">
+  <meta property="og:title" content="跨平台文件写入实现方案及注意事项">
+  <meta property="og:description" content="以下是针对跨平台文件写入需求的实现方案及注意事项：
+一、核心挑战分析Link to heading平台限制：
+Android：普通应用无法直接写入其他应用的私有目录 (/data/data/)，需依赖公共目录或游戏暴露的接口。 iOS：沙盒机制严格禁止访问其他应用目录，除非使用共享的 App Group。 PC：无沙盒限制，可直接操作文件系统。 权限要求：
+Android：需要 WRITE_EXTERNAL_STORAGE 权限（API &lt; 29）或使用 Scoped Storage（API ≥ 30）。 iOS：需配置 App Group 或依赖用户手动选择路径。 二、实现方案Link to heading方案一：写入公共目录（推荐）Link to heading前提：游戏App需预先约定从设备的公共目录（如 Downloads）读取文件。
+// 使用 path_provider 获取公共目录路径 import &#39;package:path_provider/path_provider.dart&#39;; import &#39;dart:io&#39;; Future&lt;void&gt; writeFileToPublicDir(String content) async { // 获取平台公共目录 final Directory dir = await getDownloadsDirectory(); final File file = File(&#39;${dir.path}/game_config.txt&#39;); await file.writeAsString(content); print(&#39;文件已保存至: ${file.path}&#39;); } // 调用示例 writeFileToPublicDir(&#39;Hello from Flutter Tool!&#39;); 方案二：通过 App Group 共享目录（仅iOS）Link to heading配置步骤：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-21T04:38:05+00:00">
+    <meta property="article:modified_time" content="2025-02-21T04:38:05+00:00">
+    <meta property="article:tag" content="跨平台">
+    <meta property="article:tag" content="Android">
+    <meta property="article:tag" content="IOS">
+    <meta property="article:tag" content="PC">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/flutter_helper_app2/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Konlil
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/flutter_helper_app2/">
+              跨平台文件写入实现方案及注意事项
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2025-02-21T04:38:05Z">
+                February 21, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa-solid fa-folder" aria-hidden="true"></i>
+    <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+      <span class="separator">•</span>
+    <a href="/categories/flutter/">Flutter</a>
+      <span class="separator">•</span>
+    <a href="/categories/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a></div>
+
+          <div class="tags">
+  <i class="fa-solid fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/">跨平台</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/android/">Android</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/ios/">IOS</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/pc/">PC</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <p>以下是针对跨平台文件写入需求的实现方案及注意事项：</p>
+<hr>
+<h3 id="一核心挑战分析">
+  一、核心挑战分析
+  <a class="heading-link" href="#%e4%b8%80%e6%a0%b8%e5%bf%83%e6%8c%91%e6%88%98%e5%88%86%e6%9e%90">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ol>
+<li>
+<p><strong>平台限制</strong>：</p>
+<ul>
+<li><strong>Android</strong>：普通应用无法直接写入其他应用的私有目录 (<code>/data/data/</code>)，需依赖公共目录或游戏暴露的接口。</li>
+<li><strong>iOS</strong>：沙盒机制严格禁止访问其他应用目录，除非使用共享的 <code>App Group</code>。</li>
+<li><strong>PC</strong>：无沙盒限制，可直接操作文件系统。</li>
+</ul>
+</li>
+<li>
+<p><strong>权限要求</strong>：</p>
+<ul>
+<li><strong>Android</strong>：需要 <code>WRITE_EXTERNAL_STORAGE</code> 权限（API &lt; 29）或使用 <code>Scoped Storage</code>（API ≥ 30）。</li>
+<li><strong>iOS</strong>：需配置 <code>App Group</code> 或依赖用户手动选择路径。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="二实现方案">
+  二、实现方案
+  <a class="heading-link" href="#%e4%ba%8c%e5%ae%9e%e7%8e%b0%e6%96%b9%e6%a1%88">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<h4 id="方案一写入公共目录推荐">
+  方案一：写入公共目录（推荐）
+  <a class="heading-link" href="#%e6%96%b9%e6%a1%88%e4%b8%80%e5%86%99%e5%85%a5%e5%85%ac%e5%85%b1%e7%9b%ae%e5%bd%95%e6%8e%a8%e8%8d%90">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p><strong>前提</strong>：游戏App需预先约定从设备的公共目录（如 <code>Downloads</code>）读取文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic">// 使用 path_provider 获取公共目录路径
+</span></span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"></span><span style="color:#ff7b72">import</span> <span style="color:#a5d6ff">&#39;package:path_provider/path_provider.dart&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff7b72">import</span> <span style="color:#a5d6ff">&#39;dart:io&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Future<span style="color:#ff7b72;font-weight:bold">&lt;</span><span style="color:#ff7b72">void</span><span style="color:#ff7b72;font-weight:bold">&gt;</span> writeFileToPublicDir(<span style="color:#ff7b72">String</span> content) <span style="color:#ff7b72">async</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#8b949e;font-style:italic">// 获取平台公共目录
+</span></span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"></span>  <span style="color:#ff7b72">final</span> Directory dir <span style="color:#ff7b72;font-weight:bold">=</span> <span style="color:#ff7b72">await</span> getDownloadsDirectory(); 
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">final</span> File file <span style="color:#ff7b72;font-weight:bold">=</span> File(<span style="color:#a5d6ff">&#39;</span><span style="color:#a5d6ff">${</span>dir.path<span style="color:#a5d6ff">}</span><span style="color:#a5d6ff">/game_config.txt&#39;</span>);
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">await</span> file.writeAsString(content);
+</span></span><span style="display:flex;"><span>  print(<span style="color:#a5d6ff">&#39;文件已保存至: </span><span style="color:#a5d6ff">${</span>file.path<span style="color:#a5d6ff">}</span><span style="color:#a5d6ff">&#39;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic">// 调用示例
+</span></span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"></span>writeFileToPublicDir(<span style="color:#a5d6ff">&#39;Hello from Flutter Tool!&#39;</span>);
+</span></span></code></pre></div><h4 id="方案二通过-app-group-共享目录仅ios">
+  方案二：通过 App Group 共享目录（仅iOS）
+  <a class="heading-link" href="#%e6%96%b9%e6%a1%88%e4%ba%8c%e9%80%9a%e8%bf%87-app-group-%e5%85%b1%e4%ba%ab%e7%9b%ae%e5%bd%95%e4%bb%85ios">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<ol>
+<li>
+<p><strong>配置步骤</strong>：</p>
+<ul>
+<li>为两个App启用相同的 <code>App Group</code>（Xcode -&gt; Signing &amp; Capabilities）。</li>
+<li>使用 <code>group.com.yourcompany.shared</code> 格式的标识符。</li>
+</ul>
+</li>
+<li>
+<p><strong>代码实现</strong>：</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span>Future<span style="color:#ff7b72;font-weight:bold">&lt;</span><span style="color:#ff7b72">void</span><span style="color:#ff7b72;font-weight:bold">&gt;</span> writeFileToAppGroup(<span style="color:#ff7b72">String</span> content) <span style="color:#ff7b72">async</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">final</span> Directory<span style="color:#ff7b72;font-weight:bold">?</span> dir <span style="color:#ff7b72;font-weight:bold">=</span> <span style="color:#ff7b72">await</span> getApplicationSupportDirectory();
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">final</span> groupDir <span style="color:#ff7b72;font-weight:bold">=</span> Directory(<span style="color:#a5d6ff">&#39;</span><span style="color:#a5d6ff">${</span>dir.parent.path<span style="color:#a5d6ff">}</span><span style="color:#a5d6ff">/group.com.yourcompany.shared&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">if</span> (<span style="color:#ff7b72;font-weight:bold">!</span><span style="color:#ff7b72">await</span> groupDir.exists()) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff7b72">await</span> groupDir.create(<span style="color:#79c0ff;font-weight:bold">recursive:</span> <span style="color:#79c0ff">true</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">final</span> File file <span style="color:#ff7b72;font-weight:bold">=</span> File(<span style="color:#a5d6ff">&#39;</span><span style="color:#a5d6ff">${</span>groupDir.path<span style="color:#a5d6ff">}</span><span style="color:#a5d6ff">/game_config.txt&#39;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">await</span> file.writeAsString(content);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="方案三用户手动选择路径全平台">
+  方案三：用户手动选择路径（全平台）
+  <a class="heading-link" href="#%e6%96%b9%e6%a1%88%e4%b8%89%e7%94%a8%e6%88%b7%e6%89%8b%e5%8a%a8%e9%80%89%e6%8b%a9%e8%b7%af%e5%be%84%e5%85%a8%e5%b9%b3%e5%8f%b0">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic">// 使用 file_picker 让用户选择保存位置
+</span></span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"></span><span style="color:#ff7b72">import</span> <span style="color:#a5d6ff">&#39;package:file_picker/file_picker.dart&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Future<span style="color:#ff7b72;font-weight:bold">&lt;</span><span style="color:#ff7b72">void</span><span style="color:#ff7b72;font-weight:bold">&gt;</span> saveFileManually() <span style="color:#ff7b72">async</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">String</span><span style="color:#ff7b72;font-weight:bold">?</span> path <span style="color:#ff7b72;font-weight:bold">=</span> <span style="color:#ff7b72">await</span> FilePicker.platform.saveFileName(
+</span></span><span style="display:flex;"><span>    <span style="color:#79c0ff;font-weight:bold">dialogTitle:</span> <span style="color:#a5d6ff">&#39;选择保存位置&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#79c0ff;font-weight:bold">fileName:</span> <span style="color:#a5d6ff">&#39;game_config.txt&#39;</span>,
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">if</span> (path <span style="color:#ff7b72;font-weight:bold">!=</span> <span style="color:#79c0ff">null</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff7b72">final</span> File file <span style="color:#ff7b72;font-weight:bold">=</span> File(path);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff7b72">await</span> file.writeAsString(<span style="color:#a5d6ff">&#39;Hello from Flutter Tool!&#39;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h3 id="三完整工具app代码框架">
+  三、完整工具App代码框架
+  <a class="heading-link" href="#%e4%b8%89%e5%ae%8c%e6%95%b4%e5%b7%a5%e5%85%b7app%e4%bb%a3%e7%a0%81%e6%a1%86%e6%9e%b6">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-dart" data-lang="dart"><span style="display:flex;"><span><span style="color:#ff7b72">import</span> <span style="color:#a5d6ff">&#39;package:flutter/material.dart&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff7b72">import</span> <span style="color:#a5d6ff">&#39;package:path_provider/path_provider.dart&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff7b72">import</span> <span style="color:#a5d6ff">&#39;package:permission_handler/permission_handler.dart&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff7b72">import</span> <span style="color:#a5d6ff">&#39;dart:io&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff7b72">void</span> main() <span style="color:#ff7b72;font-weight:bold">=&gt;</span> runApp(MyApp());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff7b72">class</span> <span style="color:#f0883e;font-weight:bold">MyApp</span> <span style="color:#ff7b72">extends</span> StatelessWidget {
+</span></span><span style="display:flex;"><span>  <span style="color:#f85149">@</span>override
+</span></span><span style="display:flex;"><span>  Widget build(BuildContext context) {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff7b72">return</span> MaterialApp(
+</span></span><span style="display:flex;"><span>      <span style="color:#79c0ff;font-weight:bold">home:</span> Scaffold(
+</span></span><span style="display:flex;"><span>        <span style="color:#79c0ff;font-weight:bold">appBar:</span> AppBar(<span style="color:#79c0ff;font-weight:bold">title:</span> Text(<span style="color:#a5d6ff">&#39;游戏配置工具&#39;</span>)),
+</span></span><span style="display:flex;"><span>        <span style="color:#79c0ff;font-weight:bold">body:</span> Center(
+</span></span><span style="display:flex;"><span>          <span style="color:#79c0ff;font-weight:bold">child:</span> Column(
+</span></span><span style="display:flex;"><span>            <span style="color:#79c0ff;font-weight:bold">children:</span> [
+</span></span><span style="display:flex;"><span>              ElevatedButton(
+</span></span><span style="display:flex;"><span>                <span style="color:#79c0ff;font-weight:bold">onPressed:</span> () <span style="color:#ff7b72;font-weight:bold">=&gt;</span> _writeConfigFile(),
+</span></span><span style="display:flex;"><span>                <span style="color:#79c0ff;font-weight:bold">child:</span> Text(<span style="color:#a5d6ff">&#39;生成配置文件&#39;</span>),
+</span></span><span style="display:flex;"><span>              ),
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>          ),
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>      ),
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Future<span style="color:#ff7b72;font-weight:bold">&lt;</span><span style="color:#ff7b72">void</span><span style="color:#ff7b72;font-weight:bold">&gt;</span> _writeConfigFile() <span style="color:#ff7b72">async</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8b949e;font-style:italic">// Android 权限检查
+</span></span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"></span>    <span style="color:#ff7b72">if</span> (Platform.isAndroid) {
+</span></span><span style="display:flex;"><span>      <span style="color:#ff7b72">final</span> status <span style="color:#ff7b72;font-weight:bold">=</span> <span style="color:#ff7b72">await</span> Permission.storage.request();
+</span></span><span style="display:flex;"><span>      <span style="color:#ff7b72">if</span> (<span style="color:#ff7b72;font-weight:bold">!</span>status.isGranted) <span style="color:#ff7b72">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8b949e;font-style:italic">// 写入内容
+</span></span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"></span>    <span style="color:#ff7b72">const</span> configContent <span style="color:#ff7b72;font-weight:bold">=</span> <span style="color:#a5d6ff">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#a5d6ff">    player_name: FlutterUser
+</span></span></span><span style="display:flex;"><span><span style="color:#a5d6ff">    level: 100
+</span></span></span><span style="display:flex;"><span><span style="color:#a5d6ff">    coins: 9999
+</span></span></span><span style="display:flex;"><span><span style="color:#a5d6ff">    &#39;&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff7b72">try</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#ff7b72">final</span> dir <span style="color:#ff7b72;font-weight:bold">=</span> <span style="color:#ff7b72">await</span> getDownloadsDirectory();
+</span></span><span style="display:flex;"><span>      <span style="color:#ff7b72">final</span> file <span style="color:#ff7b72;font-weight:bold">=</span> File(<span style="color:#a5d6ff">&#39;</span><span style="color:#a5d6ff">${</span>dir<span style="color:#ff7b72;font-weight:bold">?</span>.path<span style="color:#a5d6ff">}</span><span style="color:#a5d6ff">/game_save_data.txt&#39;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#ff7b72">await</span> file.writeAsString(configContent);
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      ScaffoldMessenger.of(context).showSnackBar(
+</span></span><span style="display:flex;"><span>        SnackBar(<span style="color:#79c0ff;font-weight:bold">content:</span> Text(<span style="color:#a5d6ff">&#39;文件保存成功: </span><span style="color:#a5d6ff">${</span>file.path<span style="color:#a5d6ff">}</span><span style="color:#a5d6ff">&#39;</span>)),
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>    } <span style="color:#ff7b72">catch</span> (e) {
+</span></span><span style="display:flex;"><span>      ScaffoldMessenger.of(context).showSnackBar(
+</span></span><span style="display:flex;"><span>        SnackBar(<span style="color:#79c0ff;font-weight:bold">content:</span> Text(<span style="color:#a5d6ff">&#39;错误: </span><span style="color:#a5d6ff">${</span>e.toString()<span style="color:#a5d6ff">}</span><span style="color:#a5d6ff">&#39;</span>)),
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h3 id="四关键依赖">
+  四、关键依赖
+  <a class="heading-link" href="#%e5%9b%9b%e5%85%b3%e9%94%ae%e4%be%9d%e8%b5%96">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#7ee787">dependencies</span>:<span style="color:#6e7681">
+</span></span></span><span style="display:flex;"><span><span style="color:#6e7681">  </span><span style="color:#7ee787">flutter</span>:<span style="color:#6e7681">
+</span></span></span><span style="display:flex;"><span><span style="color:#6e7681">    </span><span style="color:#7ee787">sdk</span>:<span style="color:#6e7681"> </span><span style="color:#a5d6ff">flutter</span><span style="color:#6e7681">
+</span></span></span><span style="display:flex;"><span><span style="color:#6e7681">  </span><span style="color:#7ee787">path_provider</span>:<span style="color:#6e7681"> </span><span style="color:#a5d6ff">^2.0.14    </span><span style="color:#6e7681"> </span><span style="color:#8b949e;font-style:italic"># 获取系统路径</span><span style="color:#6e7681">
+</span></span></span><span style="display:flex;"><span><span style="color:#6e7681">  </span><span style="color:#7ee787">permission_handler</span>:<span style="color:#6e7681"> </span><span style="color:#a5d6ff">^10.3.0</span><span style="color:#6e7681"> </span><span style="color:#8b949e;font-style:italic"># Android权限请求</span><span style="color:#6e7681">
+</span></span></span><span style="display:flex;"><span><span style="color:#6e7681">  </span><span style="color:#7ee787">file_picker</span>:<span style="color:#6e7681"> </span><span style="color:#a5d6ff">^5.3.3       </span><span style="color:#6e7681"> </span><span style="color:#8b949e;font-style:italic"># 文件选择（方案三）</span><span style="color:#6e7681">
+</span></span></span></code></pre></div><hr>
+<h3 id="五注意事项">
+  五、注意事项
+  <a class="heading-link" href="#%e4%ba%94%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ol>
+<li>
+<p><strong>Android适配</strong>：</p>
+<ul>
+<li>在 <code>AndroidManifest.xml</code> 中添加权限：
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#7ee787">&lt;uses-permission</span> android:name=<span style="color:#a5d6ff">&#34;android.permission.WRITE_EXTERNAL_STORAGE&#34;</span> 
+</span></span><span style="display:flex;"><span>                android:maxSdkVersion=<span style="color:#a5d6ff">&#34;28&#34;</span><span style="color:#7ee787">/&gt;</span> <span style="color:#8b949e;font-style:italic">&lt;!-- 仅限旧设备 --&gt;</span>
+</span></span></code></pre></div></li>
+<li>对 Android 11+ 使用 <code>MANAGE_EXTERNAL_STORAGE</code> 权限（需上架豁免）</li>
+</ul>
+</li>
+<li>
+<p><strong>iOS适配</strong>：</p>
+<ul>
+<li>在 <code>Info.plist</code> 中添加文件共享声明：
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#7ee787">&lt;key&gt;</span>LSSupportsOpeningDocumentsInPlace<span style="color:#7ee787">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#7ee787">&lt;true/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#7ee787">&lt;key&gt;</span>UIFileSharingEnabled<span style="color:#7ee787">&lt;/key&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#7ee787">&lt;true/&gt;</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>游戏App对接</strong>：</p>
+<ul>
+<li>确保游戏从以下路径读取文件：
+<ul>
+<li>Android: <code>/storage/emulated/0/Download/game_save_data.txt</code></li>
+<li>iOS: <code>App Group</code> 共享目录 或 <code>Files</code> App可见目录</li>
+<li>Windows: <code>C:\Users\&lt;user&gt;\Downloads\game_save_data.txt</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>安全建议</strong>：</p>
+<ul>
+<li>对写入内容做签名验证</li>
+<li>使用加密存储敏感数据</li>
+<li>限制文件操作权限</li>
+</ul>
+</li>
+</ol>
+<hr>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script>
+  window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    
+    document.addEventListener('themeChanged', function (e) { 
+        if (document.readyState == 'complete') {
+          DISQUS.reset({ reload: true, config: disqus_config });
+        }
+    });
+</script>
+        
+        
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2025
+     Konlil 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
